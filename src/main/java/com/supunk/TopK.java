@@ -12,8 +12,11 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
+import static org.apache.commons.lang3.StringUtils.isNumeric;
+
 
 public class TopK {
+    public static int K = 3; // the top count
 
     public static void main(String[] args) throws Exception {
         Configuration conf = new Configuration();
@@ -32,6 +35,10 @@ public class TopK {
 
         FileInputFormat.addInputPath(job, new Path(args[0]));
         FileOutputFormat.setOutputPath(job, new Path(args[1]));
+
+        if (args.length == 3 && isNumeric(args[2])) {
+            K = Integer.parseInt(args[2]);
+        }
 
         job.waitForCompletion(true);
     }
