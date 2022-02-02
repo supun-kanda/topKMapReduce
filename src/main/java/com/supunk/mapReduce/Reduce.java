@@ -3,15 +3,18 @@ package com.supunk.mapReduce;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import static com.supunk.TopK.K;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class Reduce extends Reducer<Text, IntWritable, Text, Text> {
+    private String K_env = System.getenv("K"); // the top count
+    private final int K = isNotBlank(K_env) ? Integer.parseInt(K_env) : 3;
 
     public void reduce(Text key, Iterable<IntWritable> values, Context context)
             throws IOException, InterruptedException {
@@ -24,6 +27,7 @@ public class Reduce extends Reducer<Text, IntWritable, Text, Text> {
     }
 
     private String getSortedList(List<Integer> list) {
+
         int size = list.size();
         StringBuilder topK = new StringBuilder();
         for (int i = size - 1; i >= 0 && i >= size - K; i--) {

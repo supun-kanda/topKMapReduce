@@ -14,7 +14,6 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
 
 public class TopK {
-    public static final int K = 3; // the top count
 
     public static void main(String[] args) throws Exception {
         Configuration conf = new Configuration();
